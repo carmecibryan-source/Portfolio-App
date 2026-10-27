@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png"><meta name="theme-color" content="#0b6b8a"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Portfolio">
+<title>Mon portfolio chirurgical </title>
+<style>
+:root{box-sizing:border-box;--bg:#f6f7f9;--card:#fff;--tx:#1b2430;--mu:#6b7684;--ac:#0b6b8a;--bd:#dde2e8;--ok:#1f8a5b}
+@media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--tx:#e8edf2;--mu:#93a0ae;--ac:#4cb6d6;--bd:#2c3642;--ok:#4cc790}}
+*{box-sizing:border-box}
+body{margin:0;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:760px;margin:0 auto;padding:14px}
+h1{font-size:20px;margin:4px 0}.mu{color:var(--mu);font-size:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin:10px 0}
+button,select,input,textarea{font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:8px}
+button{cursor:pointer}button.p{background:var(--ac);color:#fff;border-color:var(--ac)}
+textarea{width:100%;min-height:80px}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.g label{display:flex;flex-direction:column;font-size:12px;color:var(--mu);gap:3px}.g .w{grid-column:1/-1}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.stats{display:flex;gap:10px;flex-wrap:wrap}.stat{flex:1;min-width:90px;text-align:center}.stat b{display:block;font-size:22px;color:var(--ac)}
+.bar{display:flex;align-items:center;gap:6px;font-size:12px;margin:2px 0}.bar i{display:block;height:8px;background:var(--ac);border-radius:4px}
+.mo{font-weight:600;margin:14px 2px 4px;color:var(--mu);text-transform:capitalize}
+.op{display:flex;justify-content:space-between;gap:8px}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:99px;border:1px solid var(--bd);color:var(--mu);margin-right:4px}.tag.o{color:var(--ok);border-color:var(--ok)}
+.hide{display:none}
+</style></head><body><main>
+<h1>🩻 Mon portfolio chirurgical</h1>
+<div class="mu" id="st"></div>
+<div class="card"><div class="row">
+<button class="p" id="new">＋ Nouvelle intervention</button>
+<button id="bk">💾 Sauvegarder (JSON)</button><button id="rs">♻️ Restaurer (JSON)</button>
+<button id="imp">📥 Importer CSV Excel</button><button id="exp">📤 Export CSV</button><button id="rh">🏥 Renommer un hôpital</button><button id="sy">☁️ Synchronisation</button>
+<input type="file" id="fj" accept=".json" class="hide"><input type="file" id="fc" accept=".csv,.txt" class="hide"></div></div>
+
+<div class="card hide" id="syncp"><b>☁️ Synchronisation entre appareils</b>
+  <div class="mu">Vos données sont enregistrées dans un dépôt GitHub privé qui vous appartient. Même réglage sur chaque appareil.</div>
+  <div class="g" style="margin-top:8px"><label class="w">Dépôt (ex : monnom/portfolio-data)<input id="sr" autocapitalize="off" autocomplete="off"></label>
+  <label class="w">Jeton d'accès (fine-grained, Contents : lecture et écriture)<input id="stk" type="password" autocomplete="off" placeholder="github_pat_…"></label></div>
+  <div class="row" style="margin-top:8px"><button class="p" id="ssave">Enregistrer et synchroniser</button><button id="sync">🔄 Synchroniser</button><button id="soff">Déconnecter</button><span class="mu" id="smsg"></span></div></div>
+<div class="card hide" id="form">
+  <b>Dictez ou tapez en vrac</b>
+  <div class="mu">Ex : « Hier, garde, KB, opérateur, hanche droite, 83 ans, initiales J D, indication fracture pertrochantérienne, technique clou gamma court, tip bien réduire avant le vissage »</div>
+  <textarea id="dict" placeholder="Dictée… (touche 🎤 du clavier du téléphone)"></textarea>
+  <div class="row"><button id="mic">🎤 Dicter</button><button class="p" id="fill">✨ Remplir les champs</button><span class="mu" id="msg"></span></div>
+  <hr style="border:0;border-top:1px solid var(--bd);margin:12px 0">
+  <div class="g">
+    <label>Date<input type="date" id="date"></label>
+    <label>Région<select id="region"></select></label>
+    <label>Latéralité<select id="lat"></select></label>
+    <label>Rôle<select id="role"></select></label>
+    <label>Lieu de PEC<select id="pec"></select></label>
+    <label>Hôpital<input id="hop" list="hops" placeholder="Choisir ou taper"><datalist id="hops"></datalist></label>
+    <label>Âge<input type="number" id="age" min="0" max="120"></label>
+    <label>Initiales patient<input id="ini" maxlength="6" style="text-transform:uppercase"></label>
+    <label>IPP (optionnel)<input id="ipp"></label>
+    <label class="w">Indication opératoire<input id="indic"></label>
+    <label class="w">Technique / intervention<input id="tech"></label>
+    <label class="w">Complications<select id="comp"></select></label>
+    <label class="w">💡 À retenir / tip<input id="tip"></label>
+    <label class="w">Notes<input id="notes"></label>
+  </div>
+  <div class="row" style="margin-top:10px"><button class="p" id="save">Enregistrer</button><button id="cancel">Annuler</button></div>
+</div>
+
+<div class="card" id="stats"></div>
+<div id="syn"></div>
+<div class="row"><input id="q" placeholder="🔍 Rechercher…" style="flex:1;min-width:140px"><select id="fr"></select><select id="fo"></select><select id="fp"></select><select id="fh"></select></div>
+<div id="list"></div>
+</main>
+<script>
+const REG=["Bassin","Fesse","Hanche","Fémur","Genou","Tibia","Cheville","Pied","Rachis cervical","Rachis thoracique","Rachis lombaire","Sacrum","Epaule","Humérus","Coude","Radius / Ulna","Poignet","Main"];
+const LAT=["","Droite","Gauche","Bilatéral"],ROLE=["Opérateur","1ère aide","2ème aide"],PEC=["Garde/urgence","Froid","Ambulatoire"],HOP=["KB","Bichat","Saint-Antoine"],COMP=["Aucune","EP pré","EP post","ISO","Sd de loges","Déficit nerf périphérique","FPP"];
+const $=s=>document.querySelector(s),LS="portfolio_ops_v1",LB="portfolio_last_backup";
+const norm=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+const esc=s=>String(s??"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const fill=(id,a,e)=>{$(id).innerHTML=(e?`<option value="">${e}</option>`:"")+a.map(x=>`<option>${x}</option>`).join("")};
+fill("#region",REG);fill("#lat",LAT);fill("#role",ROLE);fill("#pec",PEC);fill("#comp",COMP);fill("#fr",REG,"Toutes régions");fill("#fo",ROLE,"Tous rôles");fill("#fp",PEC,"Tous lieux");
+const LD="portfolio_del",LC="portfolio_sync";let ops=[],del={},cfg=null,syncMsg="",editId=null;
+try{ops=JSON.parse(localStorage.getItem(LS)||"[]");del=JSON.parse(localStorage.getItem(LD)||"{}");cfg=JSON.parse(localStorage.getItem(LC)||"null")}catch(e){}
+const save=()=>{try{localStorage.setItem(LS,JSON.stringify(ops));localStorage.setItem(LD,JSON.stringify(del))}catch(e){alert("Impossible d'enregistrer : stockage du navigateur bloqué.")}schedSync()};
+function status(){let b=localStorage.getItem(LB),t=cfg?"☁️ "+(syncMsg||"synchronisation configurée")+" · ":"📴 Hors ligne · données sur cet appareil · ";
+  t+=b?"dernière sauvegarde il y a "+Math.floor((Date.now()-b)/864e5)+" j":"⚠️ jamais sauvegardé";$("#st").textContent=t}
+function openForm(o){editId=o?o.id:null;const l=[...ops].sort((a,b)=>(b.date||"").localeCompare(a.date||""))[0];
+  o=o||{date:iso(new Date()),role:"Opérateur",pec:"Garde/urgence",hop:l?l.hop:"KB",comp:["Aucune"]};
+  $("#form").classList.remove("hide");
+  for(const k of ["date","region","lat","role","pec","hop","age","ipp","ini","indic","tech","notes","tip"])$("#"+k).value=o[k]??"";
+  $("#comp").value=(o.comp&&o.comp[0])||"Aucune";$("#dict").value="";scrollTo(0,0)}
+$("#new").onclick=()=>openForm();$("#cancel").onclick=()=>$("#form").classList.add("hide");
+$("#save").onclick=()=>{const g=k=>$("#"+k).value;
+  const o={id:editId||uid(),u:Date.now(),date:g("date"),region:g("region"),lat:g("lat"),role:g("role"),pec:g("pec"),hop:g("hop").trim(),age:g("age"),ipp:g("ipp"),ini:g("ini").trim().toUpperCase(),indic:g("indic"),tech:g("tech"),tip:g("tip"),notes:g("notes"),comp:g("comp")==="Aucune"?[]:[g("comp")]};
+  const i=ops.findIndex(x=>x.id===o.id);i<0?ops.push(o):ops[i]=o;save();$("#form").classList.add("hide");render()};
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.e)openForm(ops.find(o=>o.id===b.dataset.e));
+  if(b.dataset.d&&confirm("Supprimer cette intervention ?")){del[b.dataset.d]=Date.now();ops=ops.filter(o=>o.id!==b.dataset.d);save();render()}});
+
+/* Dictée : micro du navigateur si dispo, sinon touche 🎤 du clavier */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null;
+$("#mic").onclick=()=>{if(rec){rec.stop();return}
+  if(!SR){$("#msg").textContent="Utilisez la touche 🎤 du clavier du téléphone";return}
+  rec=new SR();rec.lang="fr-FR";rec.continuous=true;
+  rec.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)$("#dict").value+=" "+e.results[i][0].transcript};
+  rec.onerror=()=>{$("#msg").textContent="Micro indisponible (souvent besoin d'internet) : dictée du clavier 🎤"};
+  rec.onend=()=>{rec=null;$("#mic").textContent="🎤 Dicter"};rec.start();$("#mic").textContent="⏹ Stop"};
+
+/* Remplissage automatique par règles (aucune IA, aucun réseau) */
+const MON=["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septembre","octobre","novembre","decembre"];
+const RG=[["Rachis cervical",/cervical|\bc[1-7]\b/],["Rachis thoracique",/thoracique|dorsal|\bt\d{1,2}\b/],["Rachis lombaire",/lombaire|lombo|discale|\bl[1-5]\b/],["Sacrum",/sacrum/],["Bassin",/bassin|cotyle|symphyse/],["Hanche",/hanche|pth|pih|col f|pertroch|gamma/],["Fémur",/femur|femoral/],["Genou",/genou|ptg|lca|rotul/],["Cheville",/cheville|malleol|pilon/],["Tibia",/tibia|jambe|plateau/],["Pied",/pied|orteil|hallux|talus|calcaneum/],["Humérus",/humerus/],["Epaule",/epaule|clavicule|gleno/],["Coude",/coude|olecran/],["Radius / Ulna",/radius|ulna|cubitus|avant-bras/],["Poignet",/poignet|scaphoide/],["Main",/\bmain\b|doigt|metacarp/],["Fesse",/fesse|ischion|escarre/]];
+const hosp=()=>[...new Set([...(ops.length?[]:HOP),...ops.map(o=>o.hop).filter(Boolean)])].sort();
+function parse(t){const n0=norm(t),k0=n0.search(/\b(tip|a retenir|astuce)\b/),k=k0<0?t.length:k0,h=t.slice(0,k),n=norm(h),o={};
+  if(k0>=0)o.tip=t.slice(k).replace(/^\s*(tip|à retenir|a retenir|astuce)\s*[:\-]?\s*/i,"").trim();
+  const d=new Date();let m=n.match(new RegExp("(\\d{1,2}|1er)\\s+("+MON.join("|")+")"));
+  if(/avant.?hier/.test(n))d.setDate(d.getDate()-2);else if(/\bhier\b/.test(n))d.setDate(d.getDate()-1);
+  else if(m){d.setMonth(MON.indexOf(m[2]),parseInt(m[1]));if(d>new Date())d.setFullYear(d.getFullYear()-1)}
+  o.date=iso(d);
+  for(const [r,re] of RG)if(re.test(n)){o.region=r;break}
+  if(/bilateral/.test(n))o.lat="Bilatéral";else if(/droit/.test(n))o.lat="Droite";else if(/gauche/.test(n))o.lat="Gauche";
+  if(/(1|premiere)\s*(ere)?\s*aide/.test(n))o.role="1ère aide";else if(/(2|deuxieme|seconde)\s*(eme)?\s*aide/.test(n))o.role="2ème aide";else if(/operateur/.test(n))o.role="Opérateur";
+  if(/garde|urgence/.test(n))o.pec="Garde/urgence";else if(/ambulatoire/.test(n))o.pec="Ambulatoire";else if(/froid|programm/.test(n))o.pec="Froid";
+  for(const x of hosp())if(new RegExp("\\b"+norm(x).replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"\\b").test(n)){o.hop=x;break}
+  m=n.match(/(\d{1,3})\s*ans/);if(m)o.age=m[1];
+  m=h.match(/initiales?\s*:?\s*((?:[a-zA-Z]\b[\s.\-]*){2,6})/i);if(m)o.ini=m[1].replace(/[^a-zA-Z]/g,"").toUpperCase();
+  const cut=(key,stops)=>{const mm=h.match(new RegExp("(?:"+key+")\\s*:?\\s*(.*?)\\s*(?=(?:"+stops+")|$)","is"));return mm?mm[1].replace(/[,.\s]+$/,"").trim():""};
+  o.indic=cut("indication","technique|intervention|initiales");o.tech=cut("technique|intervention","indication|initiales");
+  if(!o.indic&&!o.tech)o.indic=h.trim();return o}
+$("#fill").onclick=()=>{const t=$("#dict").value.trim();if(!t)return;const o=parse(t);
+  for(const k in o)if(o[k])$("#"+k).value=o[k];$("#msg").textContent="Vérifiez les champs puis enregistrez ✔"};
+
+/* Synthèse des tips : regroupement par similarité (sans IA) */
+const tok=s=>new Set(norm(s).replace(/[^a-z0-9 ]/g," ").split(" ").filter(w=>w.length>2&&!["par","avec","les","des","sous","voie","pour","dte","gche"].includes(w)));
+const jac=(a,b)=>{let i=0;a.forEach(x=>b.has(x)&&i++);return i/(a.size+b.size-i||1)};
+function groups(){const G=[];
+  for(const o of ops.filter(o=>(o.tip||"").trim())){const t=tok(o.tech||o.indic);let g=G.find(g=>g.region===o.region&&jac(g.t,t)>=.5);
+    if(!g){g={region:o.region,t,items:[],title:o.tech||o.indic||"—"};G.push(g)}g.items.push(o)}
+  return G.filter(g=>new Set(g.items.map(o=>norm(o.tip).trim())).size>1&&new Set(g.items.map(o=>o.date)).size>1)}
+
+const fmt=d=>d?new Date(d+"T12:00").toLocaleDateString("fr-FR",{day:"2-digit",month:"short",year:"numeric"}):"Sans date";
+function render(){
+  const hs=hosp(),cur=$("#fh").value;fill("#fh",hs,"Tous hôpitaux");$("#fh").value=cur;$("#hops").innerHTML=hs.map(x=>`<option value="${esc(x)}">`).join("");
+  const q=norm($("#q").value),fr=$("#fr").value,fo=$("#fo").value,fp=$("#fp").value,fh=$("#fh").value;
+  const L=[...ops].sort((a,b)=>(b.date||"").localeCompare(a.date||"")).filter(o=>(!fr||o.region===fr)&&(!fo||o.role===fo)&&(!fp||o.pec===fp)&&(!fh||o.hop===fh)&&(!q||norm(JSON.stringify(o)).includes(q)));
+  const cnt={};L.forEach(o=>{if(o.region)cnt[o.region]=(cnt[o.region]||0)+1});
+  const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,6),mx=top[0]?top[0][1]:1,c=f=>L.filter(f).length;
+  $("#stats").innerHTML=`<div class="stats"><div class="stat"><b>${L.length}</b>interventions</div><div class="stat"><b>${c(o=>o.role==="Opérateur")}</b>opérateur</div><div class="stat"><b>${c(o=>o.role==="1ère aide")}</b>1ère aide</div><div class="stat"><b>${c(o=>o.pec==="Garde/urgence")}</b>garde/urgence</div></div>`+top.map(([r,n])=>`<div class="bar"><span style="width:110px">${r}</span><i style="width:${n/mx*55}%"></i>${n}</div>`).join("");
+  const G=groups();
+  $("#syn").innerHTML=G.length?`<div class="card"><b>💡 Synthèse des tips</b>`+G.map(g=>{const u=[...new Map(g.items.sort((a,b)=>(a.date||"").localeCompare(b.date||"")).map(o=>[norm(o.tip).trim(),o])).values()];
+    return `<div style="margin-top:8px"><b>${esc(g.title)}</b> <span class="mu">(${g.region||""} · ${g.items.length} interventions)</span><ul style="margin:4px 0 0 18px;padding:0">${u.map(o=>`<li>${esc(o.tip)} <span class="mu">${fmt(o.date)}</span></li>`).join("")}</ul></div>`}).join("")+`</div>`:"";
+  let h="",m="";
+  for(const o of L){const k=(o.date||"").slice(0,7);if(k!==m){m=k;h+=`<div class="mo">${k?new Date(k+"-15").toLocaleDateString("fr-FR",{month:"long",year:"numeric"}):"Sans date"}</div>`}
+    h+=`<div class="card"><div class="op"><div><b>${esc(o.tech)||"—"}</b><div>${esc(o.indic)}</div><div style="margin-top:4px"><span class="tag${o.role==="Opérateur"?" o":""}">${o.role||""}</span><span class="tag">${o.region||""} ${o.lat||""}</span><span class="tag">${o.pec||""}</span><span class="tag">${esc(o.hop)}</span>${o.ini?`<span class="tag">👤 ${esc(o.ini)}</span>`:""}${o.age?`<span class="tag">${o.age} ans</span>`:""}${(o.comp||[]).map(x=>`<span class="tag" style="color:#c0392b">${x}</span>`).join("")}</div>${o.tip?`<div style="margin-top:4px">💡 ${esc(o.tip)}</div>`:""}${o.notes?`<div class="mu">${esc(o.notes)}</div>`:""}</div>
+    <div style="text-align:right"><div class="mu">${fmt(o.date)}</div><button data-e="${o.id}">✏️</button> <button data-d="${o.id}">🗑</button></div></div></div>`}
+  $("#list").innerHTML=h||'<div class="mu" style="margin:20px;text-align:center">Aucune intervention. Ajoutez-en une ou restaurez votre sauvegarde.</div>';status()}
+["#q","#fr","#fo","#fp","#fh"].forEach(s=>$(s).oninput=render);
+
+$("#rh").onclick=()=>{const hs=hosp(),a=prompt("Hôpital à renommer ?\n"+hs.join(", "));if(!a)return;const b=prompt("Nouveau nom pour « "+a+" » :");if(!b)return;ops.forEach(o=>{if(o.hop===a){o.hop=b.trim();o.u=Date.now()}});save();render()};
+
+/* Sauvegarde / restauration / CSV */
+async function dl(name,data,type){const f=new File([data],name,{type});if(/iPhone|iPad/.test(navigator.userAgent)&&navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f]});return}catch(e){if(e.name==="AbortError")return}}const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;document.body.appendChild(a);a.click();a.remove()}
+$("#bk").onclick=()=>{dl("portfolio-sauvegarde-"+iso(new Date())+".json",JSON.stringify({ops}),"application/json");localStorage.setItem(LB,Date.now());status()};
+$("#rs").onclick=()=>$("#fj").click();
+const merge=a=>{const seen=new Set(ops.map(o=>o.date+o.indic+o.tech+o.ini));let n=0;for(const o of a){const k=o.date+o.indic+o.tech+o.ini;if(seen.has(k))continue;seen.add(k);ops.push({...o,id:o.id||uid(),u:Date.now()});n++}save();render();$("#st").textContent=n+" interventions ajoutées"};
+$("#fj").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{merge(JSON.parse(await f.text()).ops||[])}catch(x){alert("Fichier JSON invalide")}e.target.value=""};
+function csv(t){const l=t.split("\n")[0],d=(l.match(/;/g)||[]).length>=(l.match(/,/g)||[]).length?";":",",R=[];let r=[],c="",q=false;
+  for(let i=0;i<t.length;i++){const ch=t[i];if(q){if(ch=='"'){if(t[i+1]=='"'){c+='"';i++}else q=false}else c+=ch}else if(ch=='"')q=true;else if(ch==d){r.push(c);c=""}else if(ch=="\n"||ch=="\r"){if(ch=="\r"&&t[i+1]=="\n")i++;r.push(c);R.push(r);r=[];c=""}else c+=ch}
+  if(c||r.length){r.push(c);R.push(r)}return R}
+const pd=v=>{v=String(v||"").trim();let m;if(m=v.match(/^\d{4}-\d{2}-\d{2}/))return m[0];if(m=v.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})/))return(m[3].length==2?"20"+m[3]:m[3])+"-"+m[2].padStart(2,"0")+"-"+m[1].padStart(2,"0");if(/^\d{5}$/.test(v))return new Date(Math.round((+v-25569)*864e5)).toISOString().slice(0,10);return""};
+$("#imp").onclick=()=>$("#fc").click();
+$("#fc").onchange=async e=>{const f=e.target.files[0];if(!f)return;const R=csv(await f.text()),H=(R[0]||[]).slice(0,14).map(x=>norm(x).trim()),a=[];
+  for(const r of R.slice(1)){const g=(...ns)=>{for(const n of ns){const i=H.indexOf(n);if(i>=0)return(r[i]||"").trim()}return""};
+    const o={date:pd(g("date op","date")),region:g("region"),lat:g("lateralite","lat"),indic:g("indication operatoire","indic"),tech:g("technique/intervention","tech"),role:g("operateur","role"),pec:g("lieu de pec","pec"),hop:g("hopital","hop"),age:g("age"),ini:g("ini"),tip:g("tip"),notes:g("notes"),ipp:"",comp:[]};
+    if(o.tech||o.indic)a.push(o)}merge(a);e.target.value=""};
+$("#exp").onclick=()=>{const c=["date","region","lat","role","pec","hop","age","ini","indic","tech","comp","tip","notes"];
+  dl("portfolio.csv","\ufeff"+c.join(";")+"\n"+[...ops].sort((a,b)=>(b.date||"").localeCompare(a.date||"")).map(o=>c.map(k=>'"'+String(k==="comp"?(o.comp||[]).join(", "):o[k]??"").replace(/"/g,'""')+'"').join(";")).join("\n"),"text/csv")};
+/* Synchronisation via un dépôt GitHub privé (aucun serveur tiers autre que GitHub) */
+const enc=s=>{let r="";new TextEncoder().encode(s).forEach(c=>r+=String.fromCharCode(c));return btoa(r)};
+const dec=s=>new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\s/g,"")),c=>c.charCodeAt(0)));
+const gh=(m,body)=>fetch("https://api.github.com/repos/"+cfg.repo+"/contents/"+cfg.path,{method:m,cache:"no-store",headers:{Authorization:"Bearer "+cfg.token,Accept:"application/vnd.github+json"},body:body?JSON.stringify(body):undefined});
+let timer=null,syncing=false;
+function schedSync(){if(!cfg)return;clearTimeout(timer);timer=setTimeout(sync,1500)}
+async function sync(){
+  if(!cfg||syncing)return;if(!navigator.onLine){syncMsg="en attente de connexion";status();return}
+  syncing=true;syncMsg="synchronisation…";status();let ok=false;
+  try{for(let t=0;t<3&&!ok;t++){
+    const r=await gh("GET");let rem={ops:[],del:{}},sha;
+    if(r.status===200){const j=await r.json();sha=j.sha;try{rem=JSON.parse(dec(j.content))}catch(e){}}
+    else if(r.status!==404)throw new Error(r.status===401||r.status===403?"jeton refusé":"erreur "+r.status);
+    rem.ops=rem.ops||[];rem.del=rem.del||{};
+    const D={...rem.del};for(const k in del)D[k]=Math.max(D[k]||0,del[k]);
+    const M=new Map();for(const o of [...rem.ops,...ops]){const p=M.get(o.id);if(!p||(o.u||0)>(p.u||0))M.set(o.id,o)}
+    const out=[...M.values()].filter(o=>!(D[o.id]>(o.u||0)));
+    ops=out;del=D;
+    if(JSON.stringify({ops:out,del:D})!==JSON.stringify({ops:rem.ops,del:rem.del})){
+      const w=await gh("PUT",{message:"sync",content:enc(JSON.stringify({ops:out,del:D})),sha});
+      if(w.status===409||w.status===422)continue;
+      if(!w.ok)throw new Error(w.status===404?"dépôt introuvable ou jeton sans droit":"écriture refusée ("+w.status+")")}
+    try{localStorage.setItem(LS,JSON.stringify(ops));localStorage.setItem(LD,JSON.stringify(del))}catch(e){}
+    ok=true;syncMsg="synchronisé à "+new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})}
+    if(!ok)syncMsg="conflit, réessayez"}
+  catch(e){syncMsg=e.message==="Failed to fetch"?"hors connexion, en attente":e.message}
+  syncing=false;$("#smsg").textContent=ok?"":syncMsg;render()}
+$("#sy").onclick=()=>{$("#syncp").classList.toggle("hide");if(cfg)$("#sr").value=cfg.repo};
+$("#sync").onclick=sync;
+$("#ssave").onclick=()=>{const repo=$("#sr").value.trim().replace(/^https?:\/\/github\.com\//,"").replace(/\/$/,""),token=$("#stk").value.trim()||(cfg&&cfg.token);
+  if(!/^[\w.-]+\/[\w.-]+$/.test(repo)||!token){$("#smsg").textContent="Dépôt (nom/dépôt) et jeton requis";return}
+  cfg={repo,token,path:"portfolio.json"};localStorage.setItem(LC,JSON.stringify(cfg));$("#stk").value="";sync()};
+$("#soff").onclick=()=>{if(confirm("Déconnecter la synchronisation ? Les données restent sur cet appareil.")){cfg=null;localStorage.removeItem(LC);syncMsg="";render()}};
+addEventListener("online",sync);document.addEventListener("visibilitychange",()=>{if(!document.hidden)sync()});
+render();sync();
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script></body></html>
