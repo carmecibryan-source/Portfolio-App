@@ -1,36 +1,55 @@
 <!DOCTYPE html>
 <html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png"><meta name="theme-color" content="#0b6b8a"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Portfolio">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png"><meta name="theme-color" content="#0F5C54"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Portfolio">
 <title>Mon portfolio chirurgical </title>
 <style>
-:root{box-sizing:border-box;--bg:#f6f7f9;--card:#fff;--tx:#1b2430;--mu:#6b7684;--ac:#0b6b8a;--bd:#dde2e8;--ok:#1f8a5b}
-@media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--tx:#e8edf2;--mu:#93a0ae;--ac:#4cb6d6;--bd:#2c3642;--ok:#4cc790}}
+:root{box-sizing:border-box;--bg:#EEF1EF;--card:#fff;--tx:#16221F;--mu:#5C6B67;--ac:#0F5C54;--ac2:#fff;--bd:#D5DCD9;--r1:#0F5C54;--r2:#C8892B;--r3:#8A97A0;--tip:#E3ECE8;--serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif}
+@media (prefers-color-scheme:dark){:root{--bg:#0F1719;--card:#162124;--tx:#E6EEEB;--mu:#8FA19B;--ac:#6CC7B2;--ac2:#0F1719;--bd:#24343A;--r1:#6CC7B2;--r2:#E0A24A;--r3:#70818A;--tip:#1B2A28}}
 *{box-sizing:border-box}
-body{margin:0;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
-main{max-width:760px;margin:0 auto;padding:14px}
-h1{font-size:20px;margin:4px 0}.mu{color:var(--mu);font-size:12px}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin:10px 0}
-button,select,input,textarea{font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:8px}
-button{cursor:pointer}button.p{background:var(--ac);color:#fff;border-color:var(--ac)}
-textarea{width:100%;min-height:80px}
-.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
-.g label{display:flex;flex-direction:column;font-size:12px;color:var(--mu);gap:3px}.g .w{grid-column:1/-1}
+body{margin:0;padding:env(safe-area-inset-top,0) 0 calc(92px + env(safe-area-inset-bottom,0));background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:720px;margin:0 auto;padding:18px 14px}
+header{padding:10px 2px 4px}
+h1{font:600 36px/1.05 var(--serif);letter-spacing:-.02em;margin:0}
+h2{font:600 18px/1.2 var(--serif);margin:0 0 6px}
+.mu{color:var(--mu);font-size:12.5px}#st{margin-top:6px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin:12px 0}
+button,select,input,textarea{font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:9px 11px}
+button{cursor:pointer}button:hover{border-color:var(--ac)}
+button.p{background:var(--ac);color:var(--ac2);border-color:var(--ac);font-weight:600}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+input:focus,select:focus,textarea:focus{border-color:var(--ac)}
+textarea{width:100%;min-height:84px}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.g label{display:flex;flex-direction:column;font-size:12px;color:var(--mu);gap:4px}.g .w{grid-column:1/-1}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.stats{display:flex;gap:10px;flex-wrap:wrap}.stat{flex:1;min-width:90px;text-align:center}.stat b{display:block;font-size:22px;color:var(--ac)}
-.bar{display:flex;align-items:center;gap:6px;font-size:12px;margin:2px 0}.bar i{display:block;height:8px;background:var(--ac);border-radius:4px}
-.mo{font-weight:600;margin:14px 2px 4px;color:var(--mu);text-transform:capitalize}
-.op{display:flex;justify-content:space-between;gap:8px}
-.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:99px;border:1px solid var(--bd);color:var(--mu);margin-right:4px}.tag.o{color:var(--ok);border-color:var(--ok)}
+.fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:5;border-radius:999px;padding:14px 22px;box-shadow:0 6px 18px rgba(0,0,0,.28)}
+@media (prefers-reduced-motion:no-preference){.fab{transition:transform .12s}.fab:active{transform:scale(.96)}}
+.more summary{cursor:pointer;color:var(--mu);font-size:13px;list-style:none;padding:6px 2px}
+.more summary::-webkit-details-marker{display:none}.more summary::before{content:"⋯  "}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
+.tot{display:flex;align-items:baseline;gap:10px}.tot .n{font:600 56px/1 var(--serif);letter-spacing:-.03em}.tot span+span{color:var(--mu)}
+.seg{display:flex;gap:2px;height:10px;border-radius:99px;overflow:hidden;margin:12px 0 8px;background:var(--bd)}.seg i{display:block;min-width:0}
+.r1{background:var(--r1)}.r2{background:var(--r2)}.r3{background:var(--r3)}
+.leg{display:flex;gap:4px 16px;flex-wrap:wrap;font-size:13px;color:var(--mu)}.leg .d{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}
+.bar{display:grid;grid-template-columns:120px 1fr 28px;align-items:center;gap:8px;font-size:13px;margin:6px 0}
+.bar i{display:block;height:6px;border-radius:3px;background:var(--ac);opacity:.85}.bar em{font-style:normal;text-align:right;color:var(--mu)}
+.filters{margin:16px 0 4px}.filters input{flex:1 1 100%}.filters select{flex:1 1 130px;min-width:0}
+.mo{font:italic 600 15px var(--serif);margin:22px 2px 2px;color:var(--mu);text-transform:capitalize;border-bottom:1px solid var(--bd);padding-bottom:4px}
+.op-card{border-left:5px solid var(--bd)}.o1{border-left-color:var(--r1)}.o2{border-left-color:var(--r2)}.o3{border-left-color:var(--r3)}
+.op{display:flex;justify-content:space-between;gap:10px}.op>div:first-child{min-width:0}
+.op b{font:600 17px/1.25 var(--serif)}
+.tag{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:6px;background:var(--bg);color:var(--mu);margin:0 4px 4px 0}
+.tag.o{background:var(--r1);color:var(--ac2)}
+.ib{padding:4px 8px;border-radius:8px;font-size:14px}
+.tips{background:var(--tip);border-color:transparent}.tips li{margin:4px 0}
 .hide{display:none}
 </style></head><body><main>
-<h1>🩻 Mon portfolio chirurgical</h1>
-<div class="mu" id="st"></div>
-<div class="card"><div class="row">
-<button class="p" id="new">＋ Nouvelle intervention</button>
-<button id="bk">💾 Sauvegarder (JSON)</button><button id="rs">♻️ Restaurer (JSON)</button>
-<button id="imp">📥 Importer CSV Excel</button><button id="exp">📤 Export CSV</button><button id="rh">🏥 Renommer un hôpital</button><button id="sy">☁️ Synchronisation</button>
-<input type="file" id="fj" accept=".json" class="hide"><input type="file" id="fc" accept=".csv,.txt" class="hide"></div></div>
+<header><h1>Carnet opératoire</h1><div class="mu" id="st"></div></header>
+<nav><button class="p fab" id="new" aria-label="Nouvelle intervention">＋ Nouvelle intervention</button>
+<details class="more"><summary>Outils</summary><div class="tools">
+<button id="sy">☁️ Synchronisation</button><button id="bk">💾 Sauvegarder (JSON)</button><button id="rs">♻️ Restaurer (JSON)</button><button id="imp">📥 Importer CSV Excel</button><button id="exp">📤 Exporter CSV</button><button id="rh">🏥 Renommer un hôpital</button></div></details>
+<input type="file" id="fj" accept=".json" class="hide"><input type="file" id="fc" accept=".csv,.txt" class="hide"></nav>
 
 <div class="card hide" id="syncp"><b>☁️ Synchronisation entre appareils</b>
   <div class="mu">Vos données sont enregistrées dans un dépôt GitHub privé qui vous appartient. Même réglage sur chaque appareil.</div>
@@ -64,7 +83,7 @@ textarea{width:100%;min-height:80px}
 
 <div class="card" id="stats"></div>
 <div id="syn"></div>
-<div class="row"><input id="q" placeholder="🔍 Rechercher…" style="flex:1;min-width:140px"><select id="fr"></select><select id="fo"></select><select id="fp"></select><select id="fh"></select></div>
+<div class="row filters"><input id="q" placeholder="Rechercher dans le carnet…"><select id="fr"></select><select id="fo"></select><select id="fp"></select><select id="fh"></select></div>
 <div id="list"></div>
 </main>
 <script>
@@ -142,14 +161,15 @@ function render(){
   const L=[...ops].sort((a,b)=>(b.date||"").localeCompare(a.date||"")).filter(o=>(!fr||o.region===fr)&&(!fo||o.role===fo)&&(!fp||o.pec===fp)&&(!fh||o.hop===fh)&&(!q||norm(JSON.stringify(o)).includes(q)));
   const cnt={};L.forEach(o=>{if(o.region)cnt[o.region]=(cnt[o.region]||0)+1});
   const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,6),mx=top[0]?top[0][1]:1,c=f=>L.filter(f).length;
-  $("#stats").innerHTML=`<div class="stats"><div class="stat"><b>${L.length}</b>interventions</div><div class="stat"><b>${c(o=>o.role==="Opérateur")}</b>opérateur</div><div class="stat"><b>${c(o=>o.role==="1ère aide")}</b>1ère aide</div><div class="stat"><b>${c(o=>o.pec==="Garde/urgence")}</b>garde/urgence</div></div>`+top.map(([r,n])=>`<div class="bar"><span style="width:110px">${r}</span><i style="width:${n/mx*55}%"></i>${n}</div>`).join("");
+  const k=r=>c(o=>o.role===r),flt=fr||fo||fp||fh||q;
+  $("#stats").innerHTML=`<div class="tot"><span class="n">${L.length}</span><span>interventions${flt?" (filtrées)":""}</span></div><div class="seg">${[["Opérateur","r1"],["1ère aide","r2"],["2ème aide","r3"]].map(([r,x])=>`<i class="${x}" style="flex:${k(r)}" title="${r}"></i>`).join("")}</div><div class="leg"><span><i class="d r1"></i>Opérateur ${k("Opérateur")}</span><span><i class="d r2"></i>1ère aide ${k("1ère aide")}</span><span><i class="d r3"></i>2ème aide ${k("2ème aide")}</span><span>Garde/urgence ${c(o=>o.pec==="Garde/urgence")}</span></div>`+(top.length?`<div style="margin-top:12px">`+top.map(([r,n])=>`<div class="bar"><span>${r}</span><i style="width:${n/mx*100}%"></i><em>${n}</em></div>`).join("")+`</div>`:"");
   const G=groups();
-  $("#syn").innerHTML=G.length?`<div class="card"><b>💡 Synthèse des tips</b>`+G.map(g=>{const u=[...new Map(g.items.sort((a,b)=>(a.date||"").localeCompare(b.date||"")).map(o=>[norm(o.tip).trim(),o])).values()];
+  $("#syn").innerHTML=G.length?`<div class="card tips"><h2>À retenir par technique</h2>`+G.map(g=>{const u=[...new Map(g.items.sort((a,b)=>(a.date||"").localeCompare(b.date||"")).map(o=>[norm(o.tip).trim(),o])).values()];
     return `<div style="margin-top:8px"><b>${esc(g.title)}</b> <span class="mu">(${g.region||""} · ${g.items.length} interventions)</span><ul style="margin:4px 0 0 18px;padding:0">${u.map(o=>`<li>${esc(o.tip)} <span class="mu">${fmt(o.date)}</span></li>`).join("")}</ul></div>`}).join("")+`</div>`:"";
   let h="",m="";
   for(const o of L){const k=(o.date||"").slice(0,7);if(k!==m){m=k;h+=`<div class="mo">${k?new Date(k+"-15").toLocaleDateString("fr-FR",{month:"long",year:"numeric"}):"Sans date"}</div>`}
-    h+=`<div class="card"><div class="op"><div><b>${esc(o.tech)||"—"}</b><div>${esc(o.indic)}</div><div style="margin-top:4px"><span class="tag${o.role==="Opérateur"?" o":""}">${o.role||""}</span><span class="tag">${o.region||""} ${o.lat||""}</span><span class="tag">${o.pec||""}</span><span class="tag">${esc(o.hop)}</span>${o.ini?`<span class="tag">👤 ${esc(o.ini)}</span>`:""}${o.age?`<span class="tag">${o.age} ans</span>`:""}${(o.comp||[]).map(x=>`<span class="tag" style="color:#c0392b">${x}</span>`).join("")}</div>${o.tip?`<div style="margin-top:4px">💡 ${esc(o.tip)}</div>`:""}${o.notes?`<div class="mu">${esc(o.notes)}</div>`:""}</div>
-    <div style="text-align:right"><div class="mu">${fmt(o.date)}</div><button data-e="${o.id}">✏️</button> <button data-d="${o.id}">🗑</button></div></div></div>`}
+    h+=`<div class="card op-card ${o.role==="Opérateur"?"o1":o.role==="1ère aide"?"o2":"o3"}"><div class="op"><div><b>${esc(o.tech)||"—"}</b><div>${esc(o.indic)}</div><div style="margin-top:4px"><span class="tag${o.role==="Opérateur"?" o":""}">${o.role||""}</span><span class="tag">${o.region||""} ${o.lat||""}</span><span class="tag">${o.pec||""}</span><span class="tag">${esc(o.hop)}</span>${o.ini?`<span class="tag">👤 ${esc(o.ini)}</span>`:""}${o.age?`<span class="tag">${o.age} ans</span>`:""}${(o.comp||[]).map(x=>`<span class="tag" style="color:#c0392b">${x}</span>`).join("")}</div>${o.tip?`<div style="margin-top:4px">💡 ${esc(o.tip)}</div>`:""}${o.notes?`<div class="mu">${esc(o.notes)}</div>`:""}</div>
+    <div style="text-align:right"><div class="mu">${fmt(o.date)}</div><button class="ib" data-e="${o.id}" aria-label="Modifier">✏️</button> <button class="ib" data-d="${o.id}" aria-label="Supprimer">🗑</button></div></div></div>`}
   $("#list").innerHTML=h||'<div class="mu" style="margin:20px;text-align:center">Aucune intervention. Ajoutez-en une ou restaurez votre sauvegarde.</div>';status()}
 ["#q","#fr","#fo","#fp","#fh"].forEach(s=>$(s).oninput=render);
 
